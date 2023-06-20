@@ -48,8 +48,8 @@ final class __JDKPaths {
     static final Set<String> JDK;
 
     static {
-        final Set<String> pathSet = new HashSet<String>(1024);
-        final Set<String> jarSet = new HashSet<String>(1024);
+        final Set<String> pathSet = new HashSet<>(1024);
+        final Set<String> jarSet = new HashSet<>(1024);
         final String sunBootClassPath = System.getProperty("sun.boot.class.path");
         processClassPathItem(sunBootClassPath, jarSet, pathSet);
         JDK = Collections.unmodifiableSet(pathSet);
@@ -59,8 +59,11 @@ final class __JDKPaths {
     }
 
     static void processClassPathItem(final String classPath, final Set<String> jarSet, final Set<String> pathSet) {
-        if (classPath == null) return;
-        int s = 0, e;
+        if(classPath == null) {
+            return;
+        }
+        int s = 0;
+        int e;
         do {
             e = classPath.indexOf(File.pathSeparatorChar, s);
             String item = e == -1 ? classPath.substring(s) : classPath.substring(s, e);
@@ -103,7 +106,9 @@ final class __JDKPaths {
                 processDirectory1(pathSet, entry, file.getPath());
             } else {
                 final String parent = entry.getParent();
-                if (parent != null) pathSet.add(parent);
+                if(parent != null) {
+                    pathSet.add(parent);
+                }
             }
         }
     }

@@ -18,7 +18,6 @@
 package com.netflix.nicobar.core.module.jboss;
 
 import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
@@ -52,7 +51,7 @@ public class JBossModuleClassLoader extends ModuleClassLoader {
     public JBossModuleClassLoader(Configuration moduleClassLoaderContext, ScriptArchive scriptArchive) {
         super(moduleClassLoaderContext);
         this.scriptArchive = scriptArchive;
-        this.localClassCache = new ConcurrentHashMap<String, Class<?>>(scriptArchive.getArchiveEntryNames().size());
+        this.localClassCache = new ConcurrentHashMap<>(scriptArchive.getArchiveEntryNames().size());
     }
 
     /**
@@ -61,16 +60,8 @@ public class JBossModuleClassLoader extends ModuleClassLoader {
      * the {@link ModuleSpec}
      */
     protected static ModuleClassLoaderFactory createFactory(final ScriptArchive scriptArchive) {
-        return new ModuleClassLoaderFactory() {
-            public ModuleClassLoader create(final Configuration configuration) {
-                return AccessController.doPrivileged(
-                    new PrivilegedAction<JBossModuleClassLoader>() {
-                        public JBossModuleClassLoader run() {
-                            return new JBossModuleClassLoader(configuration, scriptArchive);
-                        }
-                    });
-            }
-        };
+        return configuration -> AccessController.doPrivileged(
+                () -> new JBossModuleClassLoader(configuration, scriptArchive));
     }
 
     /**
@@ -103,8 +94,9 @@ public class JBossModuleClassLoader extends ModuleClassLoader {
             return local;
         }
         local = super.loadClassLocal(className, resolve);
-        if (local != null)
+        if(local != null) {
             localClassCache.put(className, local);
+        }
         return local;
     }
 

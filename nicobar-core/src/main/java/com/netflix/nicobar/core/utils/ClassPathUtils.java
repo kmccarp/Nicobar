@@ -71,9 +71,9 @@ public class ClassPathUtils {
         URL resource = classLoader.getResource(resourceName);
         if (resource != null) {
             String protocol = resource.getProtocol();
-            if (protocol.equals("jar")) {
+            if ("jar".equals(protocol)) {
                 return getJarPathFromUrl(resource);
-            } else if (protocol.equals("file")) {
+            } else if ("file".equals(protocol)) {
                 return getRootPathFromDirectory(resourceName, resource);
             } else {
                 throw new IllegalStateException("Unsupported URL protocol: " + protocol);
@@ -134,7 +134,7 @@ public class ClassPathUtils {
      * @return set of directory paths relative to the root of the jar
      */
     public static Set<Path> getDirectoriesFromJar(Path pathToJarFile) throws IOException {
-        Set<Path> result = new HashSet<Path>();
+        Set<Path> result = new HashSet<>();
         ZipFile jarfile = new ZipFile(pathToJarFile.toFile());
         try {
             final Enumeration<? extends ZipEntry> entries = jarfile.entries();
@@ -179,7 +179,7 @@ public class ClassPathUtils {
      * @return the results of the scan, as a set of package paths (separated by '/').
      */
     public static Set<String> scanClassPath(final String classPath, final Set<String> excludeJarSet) {
-        final Set<String> pathSet = new HashSet<String>();
+        final Set<String> pathSet = new HashSet<>();
         // Defer to JDKPaths to do the actual classpath scanning.
         __JDKPaths.processClassPathItem(classPath, excludeJarSet, pathSet);
         return pathSet;
@@ -197,7 +197,7 @@ public class ClassPathUtils {
      * @return the results of the scan, as a set of package paths (separated by '/').
      */
     public static Set<String> scanClassPath(final String classPath, final Set<String> excludeJarSet, final Set<String> excludePrefixes, final Set<String> includePrefixes) {
-        final Set<String> pathSet = new HashSet<String>();
+        final Set<String> pathSet = new HashSet<>();
         // Defer to JDKPaths to do the actual classpath scanning.
         __JDKPaths.processClassPathItem(classPath, excludeJarSet, pathSet);
 
@@ -214,11 +214,11 @@ public class ClassPathUtils {
      * @return the results of the scan, as a set of package paths (separated by '/').
      */
     public static Set<String> scanClassPathWithExcludes(final String classPath, final Set<String> excludeJarSet, final Set<String> excludePrefixes) {
-        final Set<String> pathSet = new HashSet<String>();
+        final Set<String> pathSet = new HashSet<>();
         // Defer to JDKPaths to do the actual classpath scanning.
         __JDKPaths.processClassPathItem(classPath, excludeJarSet, pathSet);
 
-        return filterPathSet(pathSet, excludePrefixes, Collections.<String>emptySet());
+        return filterPathSet(pathSet, excludePrefixes, Collections.emptySet());
     }
 
     /**
@@ -231,15 +231,15 @@ public class ClassPathUtils {
      * @return the results of the scan, as a set of package paths (separated by '/').
      */
     public static Set<String> scanClassPathWithIncludes(final String classPath, final Set<String> excludeJarSet, final Set<String> includePrefixes) {
-        final Set<String> pathSet = new HashSet<String>();
+        final Set<String> pathSet = new HashSet<>();
         // Defer to JDKPaths to do the actual classpath scanning.
         __JDKPaths.processClassPathItem(classPath, excludeJarSet, pathSet);
 
-        return filterPathSet(pathSet, Collections.<String>emptySet(), includePrefixes);
+        return filterPathSet(pathSet, Collections.emptySet(), includePrefixes);
     }
 
     private static Set<String> filterPathSet(Set<String> pathSet, Set<String> excludePrefixes, Set<String> includePrefixes) {
-        Set<String> filteredSet = new HashSet<String>(pathSet);
+        Set<String> filteredSet = new HashSet<>(pathSet);
 
         // Ideally, we would use a trie, but we are talking ~100s of paths and a few excludes and includes,
         // not to mention these are throw away scans and not reused typically.
@@ -249,13 +249,14 @@ public class ClassPathUtils {
             Iterator<String> setIterator = filteredSet.iterator();
             while(setIterator.hasNext()) {
                 String path = setIterator.next();
-                if (path.startsWith(exclude))
+                if(path.startsWith(exclude)) {
                     setIterator.remove();
+                }
             }
         }
 
         // An empty set of includes indicates include everything
-        if (includePrefixes.size() == 0) {
+        if (includePrefixes.isEmpty()) {
             return filteredSet;
         }
 

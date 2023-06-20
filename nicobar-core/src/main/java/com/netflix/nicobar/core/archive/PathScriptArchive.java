@@ -41,7 +41,7 @@ import org.apache.commons.io.Charsets;
  * @author James Kojo
  */
 public class PathScriptArchive implements ScriptArchive {
-    private final static ScriptModuleSpecSerializer DEFAULT_SPEC_SERIALIZER = new GsonScriptModuleSpecSerializer();
+    private static final ScriptModuleSpecSerializer DEFAULT_SPEC_SERIALIZER = new GsonScriptModuleSpecSerializer();
     /**
      * Used to Construct a {@link PathScriptArchive}.
      * <pre>
@@ -54,7 +54,7 @@ public class PathScriptArchive implements ScriptArchive {
      */
     public static class Builder {
         private final Path rootDirPath;
-        private final Set<Path> addedFiles = new LinkedHashSet<Path>();
+        private final Set<Path> addedFiles = new LinkedHashSet<>();
         private ScriptModuleSpec moduleSpec;
         boolean recurseRoot = true;
         private ScriptModuleSpecSerializer specSerializer = DEFAULT_SPEC_SERIALIZER;
@@ -117,7 +117,7 @@ public class PathScriptArchive implements ScriptArchive {
                     buildModuleSpec = new ScriptModuleSpec.Builder(moduleId).build();
                 }
             }
-            final LinkedHashSet<String> buildEntries = new LinkedHashSet<String>();
+            final LinkedHashSet<String> buildEntries = new LinkedHashSet<>();
             if (recurseRoot) {
                 Files.walkFileTree(this.rootDirPath, EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
                     @Override
@@ -151,7 +151,9 @@ public class PathScriptArchive implements ScriptArchive {
     protected PathScriptArchive(ScriptModuleSpec moduleSpec, Path rootDirPath, Set<String> entries, long createTime) throws IOException {
         this.moduleSpec = Objects.requireNonNull(moduleSpec, "moduleSpec");
         this.rootDirPath = Objects.requireNonNull(rootDirPath, "rootDirPath");
-        if (!this.rootDirPath.isAbsolute()) throw new IllegalArgumentException("rootPath must be absolute.");
+        if(!this.rootDirPath.isAbsolute()) {
+            throw new IllegalArgumentException("rootPath must be absolute.");
+        }
         this.entryNames = Collections.unmodifiableSet(Objects.requireNonNull(entries, "entries"));
         this.rootUrl = this.rootDirPath.toUri().toURL();
         this.createTime = createTime;

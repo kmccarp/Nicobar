@@ -42,11 +42,11 @@ public class ScriptCompilerPluginSpec {
      */
     public static class Builder {
         private final String pluginId;
-        private Set<Path> runtimeResources = new LinkedHashSet<Path>();
+        private Set<Path> runtimeResources = new LinkedHashSet<>();
         private String providerClassName;
-        private Map<String, String> pluginMetadata = new LinkedHashMap<String, String>();
-        private Map<String, Object> compilerParams = new LinkedHashMap<String, Object>();
-        private final Set<ModuleId> moduleDependencies = new LinkedHashSet<ModuleId>();
+        private Map<String, String> pluginMetadata = new LinkedHashMap<>();
+        private Map<String, Object> compilerParams = new LinkedHashMap<>();
+        private final Set<ModuleId> moduleDependencies = new LinkedHashSet<>();
 
         /**
          * Start a builder with the required parameters
