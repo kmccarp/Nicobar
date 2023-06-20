@@ -51,9 +51,9 @@ import org.apache.commons.lang.builder.ToStringStyle;
  */
 public class JarScriptArchive implements ScriptArchive {
     /** Default file name of the optional {@link ScriptModuleSpec} in the archive */
-    public final static String DEFAULT_MODULE_SPEC_FILE_NAME = "moduleSpec.json";
-    private final static String JAR_FILE_SUFFIX = ".jar";
-    private final static ScriptModuleSpecSerializer DEFAULT_SPEC_SERIALIZER = new GsonScriptModuleSpecSerializer();
+    public static final String DEFAULT_MODULE_SPEC_FILE_NAME = "moduleSpec.json";
+    private static final String JAR_FILE_SUFFIX = ".jar";
+    private static final ScriptModuleSpecSerializer DEFAULT_SPEC_SERIALIZER = new GsonScriptModuleSpecSerializer();
 
     /**
      * Used to Construct a {@link JarScriptArchive}.
@@ -152,14 +152,16 @@ public class JarScriptArchive implements ScriptArchive {
         this.createTime = createTime;
         this.moduleSpec = Objects.requireNonNull(moduleSpec, "moduleSpec");
         Objects.requireNonNull(jarPath, "jarFile");
-        if (!jarPath.isAbsolute()) throw new IllegalArgumentException("jarPath must be absolute.");
+        if(!jarPath.isAbsolute()) {
+            throw new IllegalArgumentException("jarPath must be absolute.");
+        }
 
         // initialize the index
         JarFile jarFile = new JarFile(jarPath.toFile());
         Set<String> indexBuilder;
         try {
             Enumeration<JarEntry> jarEntries = jarFile.entries();
-            indexBuilder = new HashSet<String>();
+            indexBuilder = new HashSet<>();
             while (jarEntries.hasMoreElements()) {
                 JarEntry jarEntry = jarEntries.nextElement();
                 // Skip adding moduleSpec to archive entries
@@ -209,8 +211,7 @@ public class JarScriptArchive implements ScriptArchive {
         if (!entryNames.contains(entryName)) {
             return null;
         }
-        String spec = new StringBuilder()
-            .append("jar:").append(rootUrl.toString()).append("!/").append(entryName).toString();
+        String spec = "jar:" + rootUrl.toString() + "!/" + entryName;
         return new URL(spec);
     }
 

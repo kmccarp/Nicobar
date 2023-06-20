@@ -95,7 +95,9 @@ public class SingleFileScriptArchive implements ScriptArchive {
     protected SingleFileScriptArchive(ScriptModuleSpec moduleSpec, Path rootDirPath, String fileName, long createTime) throws IOException {
         this.moduleSpec = Objects.requireNonNull(moduleSpec, "moduleSpec");
         this.rootDirPath = Objects.requireNonNull(rootDirPath, "rootDirPath");
-        if (!this.rootDirPath.isAbsolute()) throw new IllegalArgumentException("rootPath must be absolute.");
+        if(!this.rootDirPath.isAbsolute()) {
+            throw new IllegalArgumentException("rootPath must be absolute.");
+        }
         this.entryNames = Collections.singleton(Objects.requireNonNull(fileName, "fileName"));
         this.rootUrl = this.rootDirPath.toUri().toURL();
         this.createTime = createTime;

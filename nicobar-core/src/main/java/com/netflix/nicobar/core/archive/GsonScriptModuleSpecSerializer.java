@@ -38,8 +38,8 @@ import com.google.gson.JsonSerializer;
  */
 public class GsonScriptModuleSpecSerializer implements ScriptModuleSpecSerializer {
     /** Default file name of the optional {@link ScriptModuleSpec} in the archive */
-    public final static String DEFAULT_MODULE_SPEC_FILE_NAME = "moduleSpec.json";
-    private static Gson SERIALIZER = new GsonBuilder()
+    public static final String DEFAULT_MODULE_SPEC_FILE_NAME = "moduleSpec.json";
+    private static Gson serializer = new GsonBuilder()
         .registerTypeAdapter(ModuleId.class, new ModuleIdGsonTransformer())
         .registerTypeAdapter(Double.class,  new DoubleGsonTransformer())
         .create();
@@ -62,8 +62,7 @@ public class GsonScriptModuleSpecSerializer implements ScriptModuleSpecSerialize
     @Override
     public String serialize(ScriptModuleSpec moduleSpec) {
         Objects.requireNonNull(moduleSpec, "moduleSpec");
-        String json = SERIALIZER.toJson(moduleSpec);
-        return json;
+        return serializer.toJson(moduleSpec);
     }
     /**
      * Convert the input JSON String to a {@link ScriptModuleSpec}
@@ -71,8 +70,7 @@ public class GsonScriptModuleSpecSerializer implements ScriptModuleSpecSerialize
     @Override
     public ScriptModuleSpec deserialize(String json) {
         Objects.requireNonNull(json, "json");
-        ScriptModuleSpec moduleSpec = SERIALIZER.fromJson(json, ScriptModuleSpec.class);
-        return moduleSpec;
+        return serializer.fromJson(json, ScriptModuleSpec.class);
 
     }
     @Override
@@ -84,7 +82,7 @@ public class GsonScriptModuleSpecSerializer implements ScriptModuleSpecSerialize
      * @return the serializer. Override this to customize the serialization logic
      */
     protected Gson getSerializer() {
-        return SERIALIZER;
+        return serializer;
     }
 
     /**
@@ -112,8 +110,9 @@ public class GsonScriptModuleSpecSerializer implements ScriptModuleSpecSerialize
     private static class DoubleGsonTransformer implements JsonSerializer<Double> {
         @Override
         public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
-            if (src == src.longValue())
+            if(src == src.longValue()) {
                 return new JsonPrimitive(src.longValue());
+            }
             return new JsonPrimitive(src);
         }
     }

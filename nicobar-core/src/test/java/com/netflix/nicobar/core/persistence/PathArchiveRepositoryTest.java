@@ -46,7 +46,6 @@ public class PathArchiveRepositoryTest extends ArchiveRepositoryTest {
 
     @Override
     public ArchiveRepository createRepository() {
-        PathArchiveRepository archiveRepository = new PathArchiveRepository.Builder(rootArchiveDirectory).build();
-        return archiveRepository;
+        return new PathArchiveRepository.Builder(rootArchiveDirectory).build();
     }
 }

@@ -46,7 +46,6 @@ public class JarArchiveRepositoryTest extends ArchiveRepositoryTest {
 
     @Override
     public ArchiveRepository createRepository() {
-        JarArchiveRepository archiveRepository = new JarArchiveRepository.Builder(rootArchiveDirectory).build();
-        return archiveRepository;
+        return new JarArchiveRepository.Builder(rootArchiveDirectory).build();
     }
 }
