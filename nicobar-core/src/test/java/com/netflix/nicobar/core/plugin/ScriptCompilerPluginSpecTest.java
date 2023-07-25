@@ -18,7 +18,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class ScriptCompilerPluginSpecTest {
 
-    final static String PLUGIN_ID = "ANY_PLUGIN_ID";
+    static final String PLUGIN_ID = "ANY_PLUGIN_ID";
 
     Path rootPath;
     final String directories = "sublevel2/sublevel3/sublevel4";

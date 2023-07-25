@@ -96,9 +96,9 @@ public class PathArchiveRepository implements ArchiveRepository {
     /**
      * Directory filter which finds readable directories
      */
-    protected final static DirectoryStream.Filter<Path> DIRECTORY_FILTER = new DirectoryStream.Filter<Path>() {
+    protected static final DirectoryStream.Filter<Path> DIRECTORY_FILTER = new DirectoryStream.Filter<Path>() {
         public boolean accept(Path path) throws IOException {
-            return (Files.isDirectory(path) && Files.isReadable(path));
+            return Files.isDirectory(path) && Files.isReadable(path);
         }
     };
 
@@ -192,7 +192,7 @@ public class PathArchiveRepository implements ArchiveRepository {
 
     @Override
     public Set<ScriptArchive> getScriptArchives(Set<ModuleId> moduleIds) throws IOException {
-        Set<ScriptArchive> scriptArchives = new LinkedHashSet<ScriptArchive>();
+        Set<ScriptArchive> scriptArchives = new LinkedHashSet<>();
         for (ModuleId moduleId : moduleIds) {
             Path moduleDir = rootDir.resolve(moduleId.toString());
             if (Files.exists(moduleDir)) {
@@ -219,7 +219,7 @@ public class PathArchiveRepository implements ArchiveRepository {
 
         @Override
         public Map<ModuleId, Long> getArchiveUpdateTimes() throws IOException {
-            Map<ModuleId, Long> updateTimes = new LinkedHashMap<ModuleId, Long>();
+            Map<ModuleId, Long> updateTimes = new LinkedHashMap<>();
             DirectoryStream<Path> archiveDirs = Files.newDirectoryStream(rootDir, DIRECTORY_FILTER);
             for (Path archiveDir: archiveDirs) {
                 Path absoluteArchiveDir = rootDir.resolve(archiveDir);
@@ -244,7 +244,7 @@ public class PathArchiveRepository implements ArchiveRepository {
 
         @Override
         public List<ArchiveSummary> getArchiveSummaries() throws IOException {
-            List<ArchiveSummary> summaries = new LinkedList<ArchiveSummary>();
+            List<ArchiveSummary> summaries = new LinkedList<>();
             Set<ModuleId> moduleIds = getArchiveUpdateTimes().keySet();
             Set<ScriptArchive> scriptArchives = getScriptArchives(moduleIds);
             for (ScriptArchive scriptArchive : scriptArchives) {

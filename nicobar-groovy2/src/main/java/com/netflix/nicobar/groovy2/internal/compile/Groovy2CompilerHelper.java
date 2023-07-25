@@ -49,8 +49,8 @@ import com.netflix.nicobar.core.compile.ScriptCompilationException;
  */
 public class Groovy2CompilerHelper {
     private final Path targetDir;
-    private final List<Path> sourceFiles = new LinkedList<Path>();
-    private final List<ScriptArchive> scriptArchives = new LinkedList<ScriptArchive>();
+    private final List<Path> sourceFiles = new LinkedList<>();
+    private final List<ScriptArchive> scriptArchives = new LinkedList<>();
     private ClassLoader parentClassLoader;
     private CompilerConfiguration compileConfig;
 
@@ -129,6 +129,6 @@ public class Groovy2CompilerHelper {
         } catch (CompilationFailedException e) {
            throw new ScriptCompilationException("Exception during script compilation", e);
         }
-        return new HashSet<GroovyClass>(unit.getClasses());
+        return new HashSet<>(unit.getClasses());
     }
 }

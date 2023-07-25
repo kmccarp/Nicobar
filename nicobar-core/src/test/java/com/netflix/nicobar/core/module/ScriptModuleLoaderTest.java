@@ -66,7 +66,7 @@ import com.netflix.nicobar.core.testutil.CoreTestResourceUtil;
  */
 public class ScriptModuleLoaderTest {
     // shared mock compiler. THis is needed because of the indirect construction style of the compiler plugin.
-    private final static ScriptArchiveCompiler MOCK_COMPILER = mock(ScriptArchiveCompiler.class);
+    private static final ScriptArchiveCompiler MOCK_COMPILER = mock(ScriptArchiveCompiler.class);
 
     @BeforeMethod
     public void resetMocks() {
@@ -123,7 +123,7 @@ public class ScriptModuleLoaderTest {
     public void testReloadWithUpdatedDepdencies() throws Exception {
         // original graph: A->B->C->D
         long originalCreateTime = 1000;
-        Set<ScriptArchive> updateArchives = new HashSet<ScriptArchive>();
+        Set<ScriptArchive> updateArchives = new HashSet<>();
         updateArchives.add(new TestDependecyScriptArchive(new ScriptModuleSpec.Builder("A").addCompilerPluginId("mockPlugin").addModuleDependency("B").build(), originalCreateTime));
         updateArchives.add(new TestDependecyScriptArchive(new ScriptModuleSpec.Builder("B").addCompilerPluginId("mockPlugin").addModuleDependency("C").build(), originalCreateTime));
         updateArchives.add(new TestDependecyScriptArchive(new ScriptModuleSpec.Builder("C").addCompilerPluginId("mockPlugin").addModuleDependency("D").build(), originalCreateTime));
@@ -178,7 +178,7 @@ public class ScriptModuleLoaderTest {
     public void testRelinkDependents() throws Exception {
         // original graph: A->B->C->D
         long originalCreateTime = 1000;
-        Set<ScriptArchive> updateArchives = new HashSet<ScriptArchive>();
+        Set<ScriptArchive> updateArchives = new HashSet<>();
         updateArchives.add(new TestDependecyScriptArchive(new ScriptModuleSpec.Builder("A").addCompilerPluginId("mockPlugin").addModuleDependency("B").build(), originalCreateTime));
         updateArchives.add(new TestDependecyScriptArchive(new ScriptModuleSpec.Builder("B").addCompilerPluginId("mockPlugin").addModuleDependency("C").build(), originalCreateTime));
         updateArchives.add(new TestDependecyScriptArchive(new ScriptModuleSpec.Builder("C").addCompilerPluginId("mockPlugin").addModuleDependency("D").build(), originalCreateTime));
@@ -223,7 +223,7 @@ public class ScriptModuleLoaderTest {
     public void testCompileErrorAbortsRelink() throws Exception {
         // original graph: A->B->C->D
         long originalCreateTime = 1000;
-        Set<ScriptArchive> updateArchives = new HashSet<ScriptArchive>();
+        Set<ScriptArchive> updateArchives = new HashSet<>();
         updateArchives.add(new TestDependecyScriptArchive(new ScriptModuleSpec.Builder("A").addCompilerPluginId("mockPlugin").addModuleDependency("B").build(), originalCreateTime));
         ScriptArchive archiveB = new TestDependecyScriptArchive(new ScriptModuleSpec.Builder("B").addCompilerPluginId("mockPlugin").addModuleDependency("C").build(), originalCreateTime);
         updateArchives.add(archiveB);
@@ -270,7 +270,7 @@ public class ScriptModuleLoaderTest {
     public void testCompileErrorSendsNotification() throws Exception {
         // original graph: A->B->C->D
         long originalCreateTime = 1000;
-        Set<ScriptArchive> updateArchives = new HashSet<ScriptArchive>();
+        Set<ScriptArchive> updateArchives = new HashSet<>();
         updateArchives.add(new TestDependecyScriptArchive(new ScriptModuleSpec.Builder("A").addCompilerPluginId("mockPlugin").addModuleDependency("B").build(), originalCreateTime));
         updateArchives.add(new TestDependecyScriptArchive(new ScriptModuleSpec.Builder("B").addCompilerPluginId("mockPlugin").addModuleDependency("C").build(), originalCreateTime));
         updateArchives.add(new TestDependecyScriptArchive(new ScriptModuleSpec.Builder("C").addCompilerPluginId("mockPlugin").addModuleDependency("D").build(), originalCreateTime));
@@ -316,7 +316,7 @@ public class ScriptModuleLoaderTest {
     @Test
     public void testOldArchiveRejected() throws Exception {
         long originalCreateTime = 2000;
-        Set<ScriptArchive> updateArchives = new HashSet<ScriptArchive>();
+        Set<ScriptArchive> updateArchives = new HashSet<>();
         updateArchives.add(new TestDependecyScriptArchive(new ScriptModuleSpec.Builder("A").addCompilerPluginId("mockPlugin").build(), originalCreateTime));
 
         when(MOCK_COMPILER.shouldCompile(Mockito.any(ScriptArchive.class))).thenReturn(true);
@@ -385,11 +385,10 @@ public class ScriptModuleLoaderTest {
     }
 
     private ScriptModuleListener createMockListener() {
-        ScriptModuleListener mockListener = mock(ScriptModuleListener.class);
-        return mockListener;
+        return mock(ScriptModuleListener.class);
     }
 
-    private static class TestDependecyScriptArchive implements ScriptArchive {
+    private static final class TestDependecyScriptArchive implements ScriptArchive {
         private final long createTime;
         private ScriptModuleSpec scriptModuleSpec;
 

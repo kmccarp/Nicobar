@@ -65,7 +65,7 @@ public class ScriptModuleUtils {
      * @return first instance that matches the given type
      */
     public static Set<Class<?>> findAssignableClasses(ScriptModule module, Class<?> targetClass) {
-        Set<Class<?>> result = new LinkedHashSet<Class<?>>();
+        Set<Class<?>> result = new LinkedHashSet<>();
         for (Class<?> candidateClass : module.getLoadedClasses()) {
             if (targetClass.isAssignableFrom(candidateClass)) {
                 result.add(candidateClass);
@@ -148,8 +148,9 @@ public class ScriptModuleUtils {
                     }
                 }
 
-                if (skip)
+                if (skip) {
                     continue;
+                }
 
                 InputStream entryStream = entryUrl.openStream();
                 byte[] entryBytes = IOUtils.toByteArray(entryStream);

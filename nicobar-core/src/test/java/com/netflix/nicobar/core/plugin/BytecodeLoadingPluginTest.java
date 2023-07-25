@@ -50,10 +50,10 @@ public class BytecodeLoadingPluginTest {
 
         // Create a set of app packages to allow access by the compilers, as well as the scripts.
         // We take a hammer approach and just exclude all com/netflix from the set of app packages exposed.
-        Set<String> excludes = new HashSet<String>();
+        Set<String> excludes = new HashSet<>();
         Collections.addAll(excludes, "com/netflix");
         Set<String> pathSet = ClassPathUtils.scanClassPathWithExcludes(System.getProperty("java.class.path"),
-                Collections.<String> emptySet(),
+                Collections. emptySet(),
                 excludes);
 
         moduleLoader = new ScriptModuleLoader.Builder()
@@ -100,7 +100,7 @@ public class BytecodeLoadingPluginTest {
         URL depJarPath = getClass().getClassLoader().getResource("testmodules/hellohelper.jar");
         JarScriptArchive depArchive = new JarScriptArchive.Builder(Paths.get(depJarPath.getFile()))
             .build();
-        Set<ScriptArchive> archives = new HashSet<ScriptArchive>();
+        Set<ScriptArchive> archives = new HashSet<>();
         Collections.<ScriptArchive>addAll(archives, depArchive, jarArchive);
         moduleLoader.updateScriptArchives(archives);
         ScriptModule module = moduleLoader.getScriptModule(ModuleId.create("helloworld"));
@@ -116,10 +116,8 @@ public class BytecodeLoadingPluginTest {
 
     private ScriptCompilerPluginSpec getCompilerSpec() {
         // Create a compiler spec for the bytecode loading plugin
-        ScriptCompilerPluginSpec compilerSpec = new ScriptCompilerPluginSpec.Builder(BytecodeLoadingPlugin.PLUGIN_ID)
+        return new ScriptCompilerPluginSpec.Builder(BytecodeLoadingPlugin.PLUGIN_ID)
             .withPluginClassName(BytecodeLoadingPlugin.class.getName())
             .build();
-
-        return compilerSpec;
     }
 }

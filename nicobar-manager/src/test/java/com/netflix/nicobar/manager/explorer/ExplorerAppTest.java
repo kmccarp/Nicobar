@@ -53,11 +53,11 @@ public class ExplorerAppTest {
         .put("/scriptmanager/repositorysummaries", MediaType.APPLICATION_JSON)
         .build();
 
-    private static int TEST_LOCAL_PORT;
+    private static int testLocalPort;
 
     static {
         try {
-            TEST_LOCAL_PORT = getLocalPort();
+            testLocalPort = getLocalPort();
         } catch (IOException e) {
             LOG.error("IOException in finding local port for starting jetty ", e);
         }
@@ -77,7 +77,7 @@ public class ExplorerAppTest {
         System.setProperty("archaius.deployment.applicationId","scriptmanager-app");
         System.setProperty("archaius.deployment.environment","dev");
 
-        server = new Server(TEST_LOCAL_PORT);
+        server = new Server(testLocalPort);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
@@ -118,7 +118,7 @@ public class ExplorerAppTest {
     }
 
     private String buildLocalHostEndpoint(String endPoint) {
-        return "http://localhost:" + TEST_LOCAL_PORT + endPoint;
+        return "http://localhost:" + testLocalPort + endPoint;
     }
 
 }

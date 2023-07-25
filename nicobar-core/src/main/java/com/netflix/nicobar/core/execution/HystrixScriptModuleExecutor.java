@@ -43,7 +43,7 @@ import com.netflix.nicobar.core.module.ScriptModuleLoader;
  * @author Vasanth Asokan
  */
 public class HystrixScriptModuleExecutor<V> {
-    private final static Logger logger = LoggerFactory.getLogger(HystrixScriptModuleExecutor.class);
+    private static final Logger logger = LoggerFactory.getLogger(HystrixScriptModuleExecutor.class);
 
     /**
      * Statistics holder for a given module's executions.
@@ -60,7 +60,7 @@ public class HystrixScriptModuleExecutor<V> {
         }
     }
 
-    private final ConcurrentMap<ModuleId, ExecutionStatistics> statistics = new ConcurrentHashMap<ModuleId, ExecutionStatistics>();
+    private final ConcurrentMap<ModuleId, ExecutionStatistics> statistics = new ConcurrentHashMap<>();
     private final String executorId;
 
     /**
@@ -84,7 +84,7 @@ public class HystrixScriptModuleExecutor<V> {
         Objects.requireNonNull(executable, "executable");
         Objects.requireNonNull(moduleLoader, "moduleLoader");
 
-        List<ScriptModule> modules = new ArrayList<ScriptModule>(moduleIds.size());
+        List<ScriptModule> modules = new ArrayList<>(moduleIds.size());
         for (String moduleId : moduleIds) {
            ScriptModule module = moduleLoader.getScriptModule(ModuleId.create(moduleId));
            if (module != null) {
@@ -105,7 +105,7 @@ public class HystrixScriptModuleExecutor<V> {
         Objects.requireNonNull(modules, "modules");
         Objects.requireNonNull(executable, "executable");
 
-        List<Future<V>> futureResults = new ArrayList<Future<V>>(modules.size());
+        List<Future<V>> futureResults = new ArrayList<>(modules.size());
         for (ScriptModule module : modules) {
            Future<V> future = new ScriptModuleExecutionCommand<V>(executorId, executable, module).queue();
            futureResults.add(future);
@@ -115,7 +115,7 @@ public class HystrixScriptModuleExecutor<V> {
            moduleStats.lastExecutionTime.set(System.currentTimeMillis());
         }
 
-        List<V> results = new ArrayList<V>(modules.size());
+        List<V> results = new ArrayList<>(modules.size());
         for (int i = 0; i < futureResults.size(); i++) {
             Future<V> futureResult = futureResults.get(i);
             try {
@@ -137,8 +137,7 @@ public class HystrixScriptModuleExecutor<V> {
      */
     @Nullable
     public ExecutionStatistics getModuleStatistics(ModuleId moduleId) {
-        ExecutionStatistics moduleStats = statistics.get(moduleId);
-        return moduleStats;
+        return statistics.get(moduleId);
     }
 
     /**

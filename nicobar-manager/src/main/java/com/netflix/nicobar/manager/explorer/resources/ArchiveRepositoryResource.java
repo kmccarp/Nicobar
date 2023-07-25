@@ -70,7 +70,7 @@ public class ArchiveRepositoryResource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public Viewable showView() {
-        Map<String, Object> model = new HashMap<String, Object>();
+        Map<String, Object> model = new HashMap<>();
         model.put("repositoryId", repository.getRepositoryId());
         return new Viewable( "/scriptmanager/repository_view.ftl", model);
     }
@@ -132,14 +132,22 @@ public class ArchiveRepositoryResource {
     }
 
     public void validateModuleSpec(ScriptModuleSpec moduleSpec) {
-        Set<String> missing = new HashSet<String>(1);
+        Set<String> missing = new HashSet<>(1);
         if (moduleSpec == null) {
             missing.add("moduleSpec");
         } else {
-            if (moduleSpec.getCompilerPluginIds() == null) missing.add("compilerPluginIds");
-            if (moduleSpec.getMetadata() == null) missing.add("metadata");
-            if (moduleSpec.getModuleDependencies() == null) missing.add("moduleDependencies");
-            if (moduleSpec.getModuleId() == null) missing.add("moduleId");
+            if (moduleSpec.getCompilerPluginIds() == null) {
+                missing.add("compilerPluginIds");
+            }
+            if (moduleSpec.getMetadata() == null) {
+                missing.add("metadata");
+            }
+            if (moduleSpec.getModuleDependencies() == null) {
+                missing.add("moduleDependencies");
+            }
+            if (moduleSpec.getModuleId() == null) {
+                missing.add("moduleId");
+            }
         }
         if (!missing.isEmpty()) {
             throw new WebApplicationException(
