@@ -27,8 +27,8 @@ import java.util.regex.Pattern;
 public final class ModuleId {
     private static final String MODULE_NAME_PATTERN_STR = "^[a-zA-Z0-9_/][a-zA-Z0-9_\\-{}\\\\@$:<>/]*$";
     private static final String MODULE_VERSION_PATTERN_STR = "^[a-zA-Z0-9_\\-]*$";
-    private static Pattern MODULE_NAME_PATTERN = Pattern.compile(MODULE_NAME_PATTERN_STR);
-    private static Pattern MODULE_VERSION_PATTERN = Pattern.compile(MODULE_VERSION_PATTERN_STR);
+    private static final Pattern MODULE_NAME_PATTERN = Pattern.compile(MODULE_NAME_PATTERN_STR);
+    private static final Pattern MODULE_VERSION_PATTERN = Pattern.compile(MODULE_VERSION_PATTERN_STR);
     public static final String DEFAULT_VERSION = "";
     public static final String MODULE_VERSION_SEPARATOR = ".";
 
@@ -37,7 +37,7 @@ public final class ModuleId {
     private final int hashCode;
 
     private ModuleId(final String name, final String version) {
-        if (name == null || name.equals("")) {
+        if (name == null || "".equals(name)) {
             throw new IllegalArgumentException("Module name can not be null or empty.");
         }
         if (!MODULE_NAME_PATTERN.matcher(name).matches()) {
@@ -103,10 +103,11 @@ public final class ModuleId {
      */
     @Override
     public String toString() {
-        if (version.equals(DEFAULT_VERSION))
+        if (version.equals(DEFAULT_VERSION)) {
             return name;
-        else
+        } else {
             return name + MODULE_VERSION_SEPARATOR + version;
+        }
 
     }
 

@@ -91,10 +91,10 @@ import com.netflix.nicobar.core.persistence.RepositoryView;
  * @author Vasanth Asokan
  */
 public class CassandraArchiveRepository implements ArchiveRepository {
-    private final static Logger logger = LoggerFactory.getLogger(CassandraArchiveRepository.class);
+    private static final Logger logger = LoggerFactory.getLogger(CassandraArchiveRepository.class);
 
     /** column names */
-    public static enum Columns {
+    public enum Columns {
         module_id,
         module_name,
         module_version,
@@ -102,7 +102,7 @@ public class CassandraArchiveRepository implements ArchiveRepository {
         last_update,
         module_spec,
         archive_content_hash,
-        archive_content;
+        archive_content
     }
 
     protected final RepositoryView defaultView;
@@ -169,7 +169,7 @@ public class CassandraArchiveRepository implements ArchiveRepository {
         int shardNum = calculateShardNum(moduleId);
         byte[] jarBytes = Files.readAllBytes(jarFilePath);
         byte[] hash = calculateHash(jarBytes);
-        Map<String, Object> columns = new HashMap<String, Object>();
+        Map<String, Object> columns = new HashMap<>();
         columns.put(Columns.module_id.name(), moduleId.toString());
         columns.put(Columns.module_name.name(), moduleId.getName());
         columns.put(Columns.module_version.name(), moduleId.getVersion());
@@ -206,16 +206,16 @@ public class CassandraArchiveRepository implements ArchiveRepository {
      */
     @Override
     public Set<ScriptArchive> getScriptArchives(Set<ModuleId> moduleIds) throws IOException {
-        Set<ScriptArchive> archives = new LinkedHashSet<ScriptArchive>(moduleIds.size()*2);
+        Set<ScriptArchive> archives = new LinkedHashSet<>(moduleIds.size()*2);
         Path archiveOuputDir = getConfig().getArchiveOutputDirectory();
-        List<ModuleId> moduleIdList = new LinkedList<ModuleId>(moduleIds);
+        List<ModuleId> moduleIdList = new LinkedList<>(moduleIds);
         int batchSize = getConfig().getArchiveFetchBatchSize();
         int start = 0;
         try {
             while (start < moduleIdList.size()) {
                 int end = Math.min(moduleIdList.size(), start + batchSize);
                 List<ModuleId> batchModuleIds = moduleIdList.subList(start, end);
-                List<String> rowKeys = new ArrayList<String>(batchModuleIds.size());
+                List<String> rowKeys = new ArrayList<>(batchModuleIds.size());
                 for (ModuleId batchModuleId:batchModuleIds) {
                     rowKeys.add(batchModuleId.toString());
                 }
@@ -240,7 +240,7 @@ public class CassandraArchiveRepository implements ArchiveRepository {
                         logger.warn("Content hash validation failed for moduleId {}. size: {}", moduleId, content.length);
                         continue;
                     }
-                    String fileName = new StringBuilder().append(moduleId).append("-").append(lastUpdateTime).append(".jar").toString();
+                    String fileName = moduleId + "-" + lastUpdateTime + ".jar";
                     Path jarFile = archiveOuputDir.resolve(fileName);
                     Files.write(jarFile, content);
                     JarScriptArchive scriptArchive = new JarScriptArchive.Builder(jarFile)
@@ -276,12 +276,12 @@ public class CassandraArchiveRepository implements ArchiveRepository {
     protected Iterable<Row<String, String>> getRows(EnumSet<?> columns) throws Exception {
         int shardCount = config.getShardCount();
 
-        List<Future<Rows<String, String>>> futures = new ArrayList<Future<Rows<String, String>>>();
+        List<Future<Rows<String, String>>> futures = new ArrayList<>();
         for (int i = 0; i < shardCount; i++) {
             futures.add(cassandra.selectAsync(generateSelectByShardCql(columns, i)));
         }
 
-        List<Row<String, String>> rows = new LinkedList<Row<String, String>>();
+        List<Row<String, String>> rows = new LinkedList<>();
         for (Future<Rows<String, String>> f: futures) {
             Rows<String, String> shardRows = f.get();
             Iterables.addAll(rows, shardRows);
@@ -328,8 +328,7 @@ public class CassandraArchiveRepository implements ArchiveRepository {
             // should never happen
             return null;
         }
-        byte[] hashCode = digester.digest(content);
-        return hashCode;
+        return digester.digest(content);
     }
 
     protected int calculateShardNum(ModuleId moduleId) {
@@ -373,7 +372,7 @@ public class CassandraArchiveRepository implements ArchiveRepository {
             } catch (Exception e) {
                 throw new IOException(e);
             }
-            Map<ModuleId, Long> updateTimes = new LinkedHashMap<ModuleId, Long>();
+            Map<ModuleId, Long> updateTimes = new LinkedHashMap<>();
             for (Row<String, String> row : rows) {
                 String moduleId = row.getKey();
                 Column<String> lastUpdateColumn = row.getColumns().getColumnByName(Columns.last_update.name());
@@ -397,9 +396,8 @@ public class CassandraArchiveRepository implements ArchiveRepository {
             }
             String description = String.format("Cassandra Keyspace: %s Column Family: %s",
                 cassandra.getKeyspace().getKeyspaceName(), cassandra.getColumnFamily());
-            RepositorySummary repositorySummary = new RepositorySummary(getRepositoryId(),
+            return new RepositorySummary(getRepositoryId(),
                 description, archiveCount, maxUpdateTime);
-            return repositorySummary;
         }
 
         /**
@@ -408,7 +406,7 @@ public class CassandraArchiveRepository implements ArchiveRepository {
          */
         @Override
         public List<ArchiveSummary> getArchiveSummaries() throws IOException {
-            List<ArchiveSummary> summaries = new LinkedList<ArchiveSummary>();
+            List<ArchiveSummary> summaries = new LinkedList<>();
             Iterable<Row<String, String>> rows;
             try {
                     rows = getRows((EnumSet<?>)EnumSet.of(Columns.module_id, Columns.last_update, Columns.module_spec));

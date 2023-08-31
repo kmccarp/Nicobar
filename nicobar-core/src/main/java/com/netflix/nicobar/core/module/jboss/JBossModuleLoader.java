@@ -62,7 +62,7 @@ import com.netflix.nicobar.core.module.GraphUtils;
  */
 public class JBossModuleLoader extends ModuleLoader {
     /** Comparator used for the module revision sorting */
-    protected final static Comparator<ModuleIdentifier> MODULE_ID_COMPARATOR = new Comparator<ModuleIdentifier>() {
+    protected static final Comparator<ModuleIdentifier> MODULE_ID_COMPARATOR = new Comparator<ModuleIdentifier>() {
         @Override
         public int compare(ModuleIdentifier id1, ModuleIdentifier id2) {
             if (id1 == null && id2 == null || id1 == id2) {
@@ -88,7 +88,7 @@ public class JBossModuleLoader extends ModuleLoader {
      * Construct a instance with an empty module spec repository.
      */
     public JBossModuleLoader() {
-        this(new ConcurrentSkipListMap<ModuleIdentifier, ModuleSpec>(MODULE_ID_COMPARATOR));
+        this(new ConcurrentSkipListMap<>(MODULE_ID_COMPARATOR));
     }
 
     private JBossModuleLoader(final SortedMap<ModuleIdentifier, ModuleSpec> moduleSpecs) {
@@ -146,6 +146,7 @@ public class JBossModuleLoader extends ModuleLoader {
         return findLoadedModuleLocal(revisionId);
     }
 
+
     /**
      * Add a {@link ModuleSpec} to the internal repository making it ready to load. Note, this doesn't
      * actually load the {@link Module}.
@@ -154,7 +155,6 @@ public class JBossModuleLoader extends ModuleLoader {
      * @param moduleSpec spec to add
      * @return true if the instance was added
      */
-    @Nullable
     public boolean addModuleSpec(ModuleSpec moduleSpec) {
         Objects.requireNonNull(moduleSpec, "moduleSpec");
         ModuleIdentifier revisionId = moduleSpec.getModuleIdentifier();
@@ -215,7 +215,7 @@ public class JBossModuleLoader extends ModuleLoader {
      */
     public Set<ModuleIdentifier> getAllRevisionIds(String scriptModuleId) {
         Objects.requireNonNull(scriptModuleId, "scriptModuleId");
-        Set<ModuleIdentifier> revisionIds = new LinkedHashSet<ModuleIdentifier>();
+        Set<ModuleIdentifier> revisionIds = new LinkedHashSet<>();
         for (ModuleIdentifier revisionId : moduleSpecs.keySet()) {
             if (revisionId.getName().equals(scriptModuleId)) {
                 revisionIds.add(revisionId);
@@ -229,7 +229,7 @@ public class JBossModuleLoader extends ModuleLoader {
      * @return immutable snapshot of the latest module revisionIds
      */
     public Map<ModuleId, ModuleIdentifier> getLatestRevisionIds() {
-        Map<ModuleId, ModuleIdentifier> nameToIdMap = new HashMap<ModuleId, ModuleIdentifier>(moduleSpecs.size()*2);
+        Map<ModuleId, ModuleIdentifier> nameToIdMap = new HashMap<>(moduleSpecs.size()*2);
         for (Entry<ModuleIdentifier, ModuleSpec> entry : moduleSpecs.entrySet()) {
             ModuleId scriptModuleId = ModuleId.fromString(entry.getKey().getName());
             ModuleSpec moduleSpec = entry.getValue();
@@ -258,7 +258,7 @@ public class JBossModuleLoader extends ModuleLoader {
      * @return a mutable snapshot of the underlying dependency
      */
     public DirectedGraph<ModuleId, DefaultEdge> getModuleNameGraph() {
-        SimpleDirectedGraph<ModuleId, DefaultEdge> graph = new SimpleDirectedGraph<ModuleId, DefaultEdge>(DefaultEdge.class);
+        SimpleDirectedGraph<ModuleId, DefaultEdge> graph = new SimpleDirectedGraph<>(DefaultEdge.class);
         Map<ModuleId, ModuleIdentifier> moduleIdentifiers = getLatestRevisionIds();
         GraphUtils.addAllVertices(graph, moduleIdentifiers.keySet());
         for (Entry<ModuleId, ModuleIdentifier> entry : moduleIdentifiers.entrySet()) {
@@ -280,7 +280,7 @@ public class JBossModuleLoader extends ModuleLoader {
         if (!(moduleSpec instanceof ConcreteModuleSpec)) {
             throw new IllegalArgumentException("Unsupported ModuleSpec implementation: " + moduleSpec.getClass().getName());
         }
-        Set<ModuleId> dependencyNames = new LinkedHashSet<ModuleId>();
+        Set<ModuleId> dependencyNames = new LinkedHashSet<>();
         ConcreteModuleSpec concreteSpec = (ConcreteModuleSpec)moduleSpec;
         for (DependencySpec dependencSpec : concreteSpec.getDependencies()) {
             if (dependencSpec instanceof ModuleDependencySpec) {

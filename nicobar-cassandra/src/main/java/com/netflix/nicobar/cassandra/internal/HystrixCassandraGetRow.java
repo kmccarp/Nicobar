@@ -66,7 +66,6 @@ public class HystrixCassandraGetRow<RowKeyType> extends AbstractCassandraHystrix
         if (columns != null) {
             rowQuery = rowQuery.withColumnSlice(columns);
         }
-        ColumnList<String> result = rowQuery.execute().getResult();
-        return result;
+        return rowQuery.execute().getResult();
    }
 }

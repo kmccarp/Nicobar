@@ -100,13 +100,12 @@ public class GroovyModuleLoaderExample {
                 Class<?> callable = ScriptModuleUtils.findAssignableClass(scriptModule, Callable.class);
                 @SuppressWarnings("unchecked")
                 Callable<String> instance = (Callable<String>) callable.newInstance();
-                String result = instance.call();
-                return result;
+                return instance.call();
             }
         };
 
         // Execute it in a Hystrix command.
-        HystrixScriptModuleExecutor<String> executor = new HystrixScriptModuleExecutor<String>("TestModuleExecutor");
+        HystrixScriptModuleExecutor<String> executor = new HystrixScriptModuleExecutor<>("TestModuleExecutor");
         List<String> results = executor.executeModules(Collections.singletonList(SCRIPT_MODULE_ID), executable, moduleLoader);
         System.out.println("Module(s) have been executed. Output: " + results);
 

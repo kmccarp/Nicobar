@@ -90,7 +90,7 @@ public class JarScriptArchiveTest {
         ScriptModuleSpec moduleSpec = scriptArchive.getModuleSpec();
         assertEquals(moduleSpec.getModuleId(), TEST_MODULE_SPEC_JAR.getModuleId());
         assertEquals(moduleSpec.getModuleDependencies(), Collections.emptySet());
-        Map<String, String> expectedMetadata = new HashMap<String, String>();
+        Map<String, String> expectedMetadata = new HashMap<>();
         expectedMetadata.put("metadataName1", "metadataValue1");
         expectedMetadata.put("metadataName2", "metadataValue2");
     }

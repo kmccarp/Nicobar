@@ -85,8 +85,8 @@ public class PathScriptArchiveTest {
         ScriptModuleSpec moduleSpec = scriptArchive.getModuleSpec();
         assertEquals(moduleSpec.getModuleId(), TEST_MODULE_SPEC_PATH.getModuleId());
         assertEquals(moduleSpec.getModuleDependencies(), Collections.emptySet());
-        Map<String, Object> expectedMetadata = new HashMap<String, Object>();
-        Map<String, String> expectedMetadata1 = new HashMap<String, String>();
+        Map<String, Object> expectedMetadata = new HashMap<>();
+        Map<String, String> expectedMetadata1 = new HashMap<>();
 
         expectedMetadata1.put("nestedKey1", "metadataValue1");
         expectedMetadata1.put("nestedKey2", "metadataValue2");

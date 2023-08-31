@@ -49,7 +49,7 @@ public class ClassPathUtilsTest {
     public void testScanClassPath() throws Exception {
         Set<String> pkgPaths = ClassPathUtils.scanClassPath(classPathStr,
                                     Collections.<String>emptySet());
-        Set<String> expected = new HashSet<String>();
+        Set<String> expected = new HashSet<>();
         Collections.addAll(expected,
                 "com/netflix/nicobar/hello",
                 "com/netflix/nicobar/test/ui",
@@ -64,14 +64,14 @@ public class ClassPathUtilsTest {
 
     @Test
     public void testScanClassPathWithExcludes() throws Exception {
-        Set<String> excludePrefixes = new HashSet<String>();
+        Set<String> excludePrefixes = new HashSet<>();
         Collections.addAll(excludePrefixes, "com/netflix/foo/bar");
         Set<String> pkgPaths = ClassPathUtils.scanClassPathWithExcludes(classPathStr,
-                        Collections.<String>emptySet(),
+                        Collections.emptySet(),
                         excludePrefixes);
-        Set<String> notExpected = new HashSet<String>();
+        Set<String> notExpected = new HashSet<>();
         Collections.addAll(notExpected, "com/netflix/foo/bar");
-        Set<String> expected = new HashSet<String>();
+        Set<String> expected = new HashSet<>();
         Collections.addAll(expected,
                 "com/netflix/nicobar/hello",
                 "com/netflix/nicobar/test/ui",
@@ -89,12 +89,12 @@ public class ClassPathUtilsTest {
 
     @Test
     public void testScanClassPathWithIncludes() throws Exception {
-        Set<String> includePrefixes = new HashSet<String>();
+        Set<String> includePrefixes = new HashSet<>();
         Collections.addAll(includePrefixes, "com/netflix/foo");
         Set<String> pkgPaths = ClassPathUtils.scanClassPathWithIncludes(classPathStr,
-                        Collections.<String>emptySet(),
+                        Collections.emptySet(),
                         includePrefixes);
-        Set<String> expected = new HashSet<String>();
+        Set<String> expected = new HashSet<>();
         Collections.addAll(expected,
                 "com/netflix/foo",
                 "com/netflix/foo/bar");
@@ -103,15 +103,15 @@ public class ClassPathUtilsTest {
 
     @Test
     public void testScanClassPathWithIncludesAndExcludes() throws Exception {
-        Set<String> includePrefixes = new HashSet<String>();
+        Set<String> includePrefixes = new HashSet<>();
         Collections.addAll(includePrefixes, "com/netflix/nicobar");
-        Set<String> excludePrefixes = new HashSet<String>();
+        Set<String> excludePrefixes = new HashSet<>();
         Collections.addAll(excludePrefixes, "com/netflix/foo/bar");
         Set<String> pkgPaths = ClassPathUtils.scanClassPath(classPathStr,
                         Collections.<String>emptySet(),
                         excludePrefixes,
                         includePrefixes);
-        Set<String> expected = new HashSet<String>();
+        Set<String> expected = new HashSet<>();
         Collections.addAll(expected, "com/netflix/nicobar/hello",
                 "com/netflix/nicobar/test/ui",
                 "com/netflix/nicobar/test/ui/internal",

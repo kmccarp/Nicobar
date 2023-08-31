@@ -72,10 +72,10 @@ public class ArchiveRepositoryPoller {
         }
     }
 
-    private final static Logger logger = LoggerFactory.getLogger(ArchiveRepositoryPoller.class);
+    private static final Logger logger = LoggerFactory.getLogger(ArchiveRepositoryPoller.class);
 
     /** Thread factory used for the default poller thread pool */
-    private final static ThreadFactory DEFAULT_POLLER_THREAD_FACTORY = new ThreadFactory() {
+    private static final ThreadFactory DEFAULT_POLLER_THREAD_FACTORY = new ThreadFactory() {
         @Override
         public Thread newThread(Runnable r) {
              Thread thread = new Thread(r, ArchiveRepositoryPoller.class.getSimpleName() + "-" + "PollerThread");
@@ -86,7 +86,7 @@ public class ArchiveRepositoryPoller {
     /** used for book-keeping  of repositories that are being polled */
     protected static class RepositoryPollerContext {
         /** Map of moduleId to last known update time of the archive */
-        protected  final Map<ModuleId, Long> lastUpdateTimes = new HashMap<ModuleId, Long>();
+        protected  final Map<ModuleId, Long> lastUpdateTimes = new HashMap<>();
 
         @SuppressFBWarnings(value="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD", justification="will use later")
         protected volatile ScheduledFuture<?> future;
@@ -96,7 +96,7 @@ public class ArchiveRepositoryPoller {
 
     /** Contains transient state required for calculating deltas */
     protected final ConcurrentHashMap<ArchiveRepository, RepositoryPollerContext> repositoryContexts =
-        new ConcurrentHashMap<ArchiveRepository, RepositoryPollerContext>();
+        new ConcurrentHashMap<>();
 
     /** Thread pool used by the pollers */
     protected final ScheduledExecutorService pollerThreadPool;
@@ -162,7 +162,7 @@ public class ArchiveRepositoryPoller {
 
         // search for new/updated archives by comparing update times reported by the repo
         // to the local repository context.
-        Set<ModuleId> updatedModuleIds = new HashSet<ModuleId>(repoUpdateTimes.size());
+        Set<ModuleId> updatedModuleIds = new HashSet<>(repoUpdateTimes.size());
         for (Entry<ModuleId, Long> entry : repoUpdateTimes.entrySet()) {
             ModuleId moduleId = entry.getKey();
             Long queryUpdateTime = entry.getValue();
@@ -177,7 +177,7 @@ public class ArchiveRepositoryPoller {
 
         // find deleted modules by taking the set difference of moduleIds in the repository
         // and module ids in the repository context
-        Set<ModuleId> deletedModuleIds = new HashSet<ModuleId>(context.lastUpdateTimes.keySet());
+        Set<ModuleId> deletedModuleIds = new HashSet<>(context.lastUpdateTimes.keySet());
         deletedModuleIds.removeAll(repoUpdateTimes.keySet());
         context.lastUpdateTimes.keySet().removeAll(deletedModuleIds);
 
