@@ -165,7 +165,7 @@ public class ScriptModuleLoaderDependenciesTest {
             .withPluginClassName(BytecodeLoadingPlugin.class.getName())
             .build();
 
-        Set<String> packages = new HashSet<String>();
+        Set<String> packages = new HashSet<>();
         packages.add("org/jboss/modules");
         ScriptModuleLoader moduleLoader = new ScriptModuleLoader.Builder()
             .addPluginSpec(pluginSpec)

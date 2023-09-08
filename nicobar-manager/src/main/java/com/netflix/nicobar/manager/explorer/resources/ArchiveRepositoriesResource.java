@@ -65,7 +65,7 @@ public class ArchiveRepositoriesResource {
     @GET
     @Produces( MediaType.TEXT_HTML )
     public Viewable showIndex() {
-        Map<String, Object> model = new HashMap<String, Object>();
+        Map<String, Object> model = new HashMap<>();
         return new Viewable( "/scriptmanager/repository_list.ftl", model);
     }
 
@@ -75,7 +75,7 @@ public class ArchiveRepositoriesResource {
     @GET
     @Path("/repositorysummaries")
     public List<RepositorySummary> getRepositorySummaries() {
-        List<RepositorySummary> result = new ArrayList<RepositorySummary>(repositories.size());
+        List<RepositorySummary> result = new ArrayList<>(repositories.size());
         for (String repositoryId : repositories.keySet()) {
             RepositorySummary repositorySummary = getScriptRepo(repositoryId).getRepositorySummary();
             result.add(repositorySummary);
@@ -94,7 +94,7 @@ public class ArchiveRepositoriesResource {
         if (CollectionUtils.isEmpty(repositoryIds)) {
             repositoryIds = repositories.keySet();
         }
-        Map<String, List<ArchiveSummary>> result = new LinkedHashMap<String, List<ArchiveSummary>>();
+        Map<String, List<ArchiveSummary>> result = new LinkedHashMap<>();
         for (String repositoryId : repositoryIds) {
             List<ArchiveSummary> repoSummaries = getScriptRepo(repositoryId).getSummaries();
             result.put(repositoryId, repoSummaries);
