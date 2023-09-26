@@ -114,11 +114,10 @@ public class Groovy2PluginTest {
                 Class<Callable> callable = (Class<Callable>) ScriptModuleUtils.findAssignableClass(scriptModule, Callable.class);
                 assertNotNull(callable, "couldn't find Callable for module " + scriptModule.getModuleId());
                 Callable<String> instance = callable.newInstance();
-                String result = instance.call();
-                return result;
+                return instance.call();
             }
         };
-        HystrixScriptModuleExecutor<String> executor = new HystrixScriptModuleExecutor<String>("TestModuleExecutor");
+        HystrixScriptModuleExecutor<String> executor = new HystrixScriptModuleExecutor<>("TestModuleExecutor");
         List<String> results = executor.executeModules(Collections.singletonList(TestScript.IMPLEMENTS_INTERFACE.getModuleId()), executable, moduleLoader);
         assertEquals(results, Collections.singletonList("I'm a Callable<String>"));
     }

@@ -32,18 +32,18 @@ public class Groovy2CompilerTest {
         // empty parameters map
         compiler = new Groovy2Compiler(new HashMap<String, Object>());
         customizers = (List<CompilationCustomizer>)f.get(compiler);
-        assertTrue(customizers.size() == 0, "no valid objects expected");
+        assertTrue(customizers.isEmpty(), "no valid objects expected");
 
         // null value customizers parameter
-        compilerParams = new HashMap<String, Object>();
+        compilerParams = new HashMap<>();
         compilerParams.put(Groovy2Compiler.GROOVY2_COMPILER_PARAMS_CUSTOMIZERS, null);
 
         compiler = new Groovy2Compiler(compilerParams);
         customizers = (List)f.get(compiler);
-        assertTrue(customizers.size() == 0, "no valid objects expected");
+        assertTrue(customizers.isEmpty(), "no valid objects expected");
 
         // list with valid customizer
-        compilerParams = new HashMap<String, Object>();
+        compilerParams = new HashMap<>();
         compilerParams.put(Groovy2Compiler.GROOVY2_COMPILER_PARAMS_CUSTOMIZERS, Arrays.asList(new String[] {"org.codehaus.groovy.control.customizers.ImportCustomizer"}));
 
         compiler = new Groovy2Compiler(compilerParams);
@@ -51,7 +51,7 @@ public class Groovy2CompilerTest {
         assertTrue(customizers.size() == 1, "one valid object expected");
 
         // list with invalid objects
-        compilerParams = new HashMap<String, Object>();
+        compilerParams = new HashMap<>();
         compilerParams.put(Groovy2Compiler.GROOVY2_COMPILER_PARAMS_CUSTOMIZERS, Arrays.asList(new Object[] {"org.codehaus.groovy.control.customizers.ImportCustomizer", "org.codehaus.groovy.control.customizers.ImportCustomizer", new HashMap<String, Object>(), null}));
 
         compiler = new Groovy2Compiler(compilerParams);
@@ -71,7 +71,7 @@ public class Groovy2CompilerTest {
             .addFile(TestScript.HELLO_WORLD.getScriptPath())
             .build();
 
-        compilerParams = new HashMap<String, Object>();
+        compilerParams = new HashMap<>();
         compilerParams.put(Groovy2Compiler.GROOVY2_COMPILER_PARAMS_CUSTOMIZERS, Arrays.asList(new Object[] {"testmodule.customizers.TestCompilationCustomizer"}));
 
         compiler = new Groovy2Compiler(compilerParams);

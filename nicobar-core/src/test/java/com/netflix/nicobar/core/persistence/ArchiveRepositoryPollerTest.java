@@ -64,7 +64,7 @@ import com.netflix.nicobar.core.testutil.CoreTestResourceUtil.TestResource;
  * @author Vasanth Asokan
  */
 public abstract class ArchiveRepositoryPollerTest {
-    private final static Logger logger = LoggerFactory.getLogger(ScriptModuleLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(ScriptModuleLoader.class);
     protected ArchiveRepository archiveRepository;
     protected ScriptModuleLoader moduleLoader;
 

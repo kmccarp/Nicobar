@@ -39,7 +39,7 @@ public class HystrixCassandraPut<RowKeyType> extends AbstractCassandraHystrixCom
     private final ColumnFamily<RowKeyType, String> columnFamily;
     private final RowKeyType rowKey;
     private final Map<String, Object> attributes;
-    private Integer ttlSeconds = null;
+    private Integer ttlSeconds;
 
     public HystrixCassandraPut(Keyspace keyspace, String columnFamilyName, RowKeyType rowKey, Map<String, Object> attributes) {
         this(keyspace, columnFamilyName, rowKey, attributes, -1);
