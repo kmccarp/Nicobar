@@ -127,7 +127,7 @@ public class ModuleIdTest {
 
     @Test
     public void testNegativeIntegerStringifiedName() {
-    	String name = String.valueOf(Integer.toHexString(Integer.MIN_VALUE));
+    	String name = Integer.toHexString(Integer.MIN_VALUE);
 	    ModuleId moduleId = ModuleId.create(name);
     	assertEquals(moduleId.toString(), name);
     }

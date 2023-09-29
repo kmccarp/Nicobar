@@ -53,7 +53,7 @@ public class BytecodeLoader implements ScriptArchiveCompiler {
     @Override
     public Set<Class<?>> compile(ScriptArchive archive, JBossModuleClassLoader moduleClassLoader, Path targetDir)
             throws ScriptCompilationException, IOException {
-        HashSet<Class<?>> addedClasses = new HashSet<Class<?>>(archive.getArchiveEntryNames().size());
+        HashSet<Class<?>> addedClasses = new HashSet<>(archive.getArchiveEntryNames().size());
         for (String entry : archive.getArchiveEntryNames()) {
             if (!entry.endsWith(".class")) {
                 continue;
