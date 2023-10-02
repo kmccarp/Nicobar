@@ -65,7 +65,7 @@ public class CassandraArchiveRepositoryTest {
     /**
      * Metadata for test resources found in test/resource
      */
-    public static enum TestResource {
+    public enum TestResource {
         TEST_HELLOWORLD_JAR("helloworld", "testmodules/helloworld.jar");
 
         private final ModuleId moduleId;
@@ -125,7 +125,7 @@ public class CassandraArchiveRepositoryTest {
         JarScriptArchive jarArchive = new JarScriptArchive.Builder(testArchiveJarFile).build();
         repository.insertArchive(jarArchive);
 
-        Map<String, Object> columns = new HashMap<String, Object>();
+        Map<String, Object> columns = new HashMap<>();
         Path jarFilePath;
         try {
             jarFilePath = Paths.get(jarArchive.getRootUrl().toURI());
@@ -183,7 +183,7 @@ public class CassandraArchiveRepositoryTest {
 
         when(mockRows.iterator()).thenReturn(rowList.iterator());
 
-        FutureTask<Rows<String, String>> future = new FutureTask<Rows<String, String>>(new Runnable() {
+        FutureTask<Rows<String, String>> future = new FutureTask<>(new Runnable() {
             @Override
             public void run() {
             }
@@ -193,7 +193,7 @@ public class CassandraArchiveRepositoryTest {
         when(gateway.selectAsync(anyString())).thenReturn(future);
 
         repository.getRows(columns);
-        List<String> selectList = new ArrayList<String>();
+        List<String> selectList = new ArrayList<>();
         for (int shardNum = 0; shardNum < config.getShardCount(); shardNum++) {
             selectList.add(repository.generateSelectByShardCql(columns, shardNum));
         }

@@ -48,12 +48,10 @@ public class Groovy2PluginUtils {
         }
 
         // Create the compiler spec
-        ScriptCompilerPluginSpec compilerSpec = new ScriptCompilerPluginSpec.Builder(Groovy2CompilerPlugin.PLUGIN_ID)
+        return new ScriptCompilerPluginSpec.Builder(Groovy2CompilerPlugin.PLUGIN_ID)
             .withPluginClassName(Groovy2CompilerPlugin.class.getName())
             .addRuntimeResource(groovyRuntimePath)
             .addRuntimeResource(nicobarGroovyPluginPath)
             .build();
-
-        return compilerSpec;
     }
 }

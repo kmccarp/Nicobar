@@ -52,7 +52,7 @@ public class JBossModuleClassLoader extends ModuleClassLoader {
     public JBossModuleClassLoader(Configuration moduleClassLoaderContext, ScriptArchive scriptArchive) {
         super(moduleClassLoaderContext);
         this.scriptArchive = scriptArchive;
-        this.localClassCache = new ConcurrentHashMap<String, Class<?>>(scriptArchive.getArchiveEntryNames().size());
+        this.localClassCache = new ConcurrentHashMap<>(scriptArchive.getArchiveEntryNames().size());
     }
 
     /**
@@ -103,8 +103,9 @@ public class JBossModuleClassLoader extends ModuleClassLoader {
             return local;
         }
         local = super.loadClassLocal(className, resolve);
-        if (local != null)
+        if (local != null) {
             localClassCache.put(className, local);
+        }
         return local;
     }
 

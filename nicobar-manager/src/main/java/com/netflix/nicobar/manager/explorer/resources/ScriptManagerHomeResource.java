@@ -35,14 +35,14 @@ import com.sun.jersey.api.view.Viewable;
 
 @Path("/")
 public class ScriptManagerHomeResource {
-    private Logger LOG = LoggerFactory.getLogger(ScriptManagerHomeResource.class);
+    private Logger log = LoggerFactory.getLogger(ScriptManagerHomeResource.class);
 
     @GET
     @Produces(MediaType.TEXT_HTML)
     public Viewable showIndex()
     {
-        LOG.info("Script manager home page requested");
-        Map<String, Object> model = new HashMap<String, Object>();
+        log.info("Script manager home page requested");
+        Map<String, Object> model = new HashMap<>();
         return new Viewable( "/scriptmanager/home.ftl", model );
     }
 }

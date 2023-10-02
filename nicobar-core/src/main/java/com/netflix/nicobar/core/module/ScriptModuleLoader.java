@@ -78,15 +78,15 @@ import static com.netflix.nicobar.core.module.ScriptModuleUtils.createModulePath
  * @author Aaron Tull
  */
 public class ScriptModuleLoader {
-    private final static Logger logger = LoggerFactory.getLogger(ScriptModuleLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(ScriptModuleLoader.class);
 
     /**
      * Builder used to constract a {@link ScriptModuleLoader}
      */
     public static class Builder {
-        private final Set<ScriptCompilerPluginSpec> pluginSpecs=  new LinkedHashSet<ScriptCompilerPluginSpec>();
-        private final Set<ScriptModuleListener> listeners = new LinkedHashSet<ScriptModuleListener>();
-        private final Set<String> paths = new LinkedHashSet<String>();
+        private final Set<ScriptCompilerPluginSpec> pluginSpecs=  new LinkedHashSet<>();
+        private final Set<ScriptModuleListener> listeners = new LinkedHashSet<>();
+        private final Set<String> paths = new LinkedHashSet<>();
         private Path compilationRootDir;
         private ClassLoader appClassLoader = ScriptModuleLoader.class.getClassLoader();
 
@@ -146,16 +146,16 @@ public class ScriptModuleLoader {
     }
 
     /** Map of script ModuleId to the loaded ScriptModules */
-    protected final Map<ModuleId, ScriptModule> loadedScriptModules = new ConcurrentHashMap<ModuleId, ScriptModule>();
-    protected final Map<String, ClassLoader> compilerClassLoaders = new ConcurrentHashMap<String, ClassLoader>();
+    protected final Map<ModuleId, ScriptModule> loadedScriptModules = new ConcurrentHashMap<>();
+    protected final Map<String, ClassLoader> compilerClassLoaders = new ConcurrentHashMap<>();
     protected final Set<ScriptCompilerPluginSpec> pluginSpecs;
     protected final ClassLoader appClassLoader;
     protected final Set<String> appPackagePaths;
-    protected final List<ScriptArchiveCompiler> compilers = new ArrayList<ScriptArchiveCompiler>();
+    protected final List<ScriptArchiveCompiler> compilers = new ArrayList<>();
     protected final Path compilationRootDir;
 
     protected final Set<ScriptModuleListener> listeners =
-        Collections.newSetFromMap(new ConcurrentHashMap<ScriptModuleListener, Boolean>());
+        Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     protected final JBossModuleLoader jbossModuleLoader;
 
@@ -189,15 +189,15 @@ public class ScriptModuleLoader {
         long updateNumber = System.currentTimeMillis();
 
         // map script module id to archive to be compiled
-        Map<ModuleId, ScriptArchive> archivesToCompile = new HashMap<ModuleId, ScriptArchive>(candidateArchives.size()*2);
+        Map<ModuleId, ScriptArchive> archivesToCompile = new HashMap<>(candidateArchives.size()*2);
 
         // create an updated mapping of the scriptModuleId to latest revisionId including the yet-to-be-compiled archives
         Map<ModuleId, ModuleIdentifier> oldRevisionIdMap = jbossModuleLoader.getLatestRevisionIds();
-        Map<ModuleId, ModuleIdentifier> updatedRevisionIdMap = new HashMap<ModuleId, ModuleIdentifier>((oldRevisionIdMap.size()+candidateArchives.size())*2);
+        Map<ModuleId, ModuleIdentifier> updatedRevisionIdMap = new HashMap<>((oldRevisionIdMap.size()+candidateArchives.size())*2);
         updatedRevisionIdMap.putAll(oldRevisionIdMap);
 
         // Map of the scriptModuleId to it's updated set of dependencies
-        Map<ModuleId, Set<ModuleId>> archiveDependencies = new HashMap<ModuleId, Set<ModuleId>>();
+        Map<ModuleId, Set<ModuleId>> archiveDependencies = new HashMap<>();
         for (ScriptArchive scriptArchive : candidateArchives) {
             ModuleId scriptModuleId = scriptArchive.getModuleSpec().getModuleId();
 
@@ -265,7 +265,7 @@ public class ScriptModuleLoader {
                     // compiled classes and populate into the module's local class cache.
                     jbossModuleLoader.rescanModule(jbossModule);
 
-                    final Set<String> classesToLoad = new LinkedHashSet<String>();
+                    final Set<String> classesToLoad = new LinkedHashSet<>();
                     Files.walkFileTree(moduleCompilationRoot, new SimpleFileVisitor<Path>() {
                         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                             String relativePath = moduleCompilationRoot.relativize(file).toString();
@@ -278,8 +278,9 @@ public class ScriptModuleLoader {
                     });
                     for (String loadClass: classesToLoad) {
                         Class<?> loadedClass = jbossModule.getClassLoader().loadClassLocal(loadClass, true);
-                        if (loadedClass == null)
+                        if (loadedClass == null) {
                             throw new ScriptCompilationException("Unable to load compiled class: " + loadClass);
+                        }
                     }
                 } catch (Exception e) {
                     // rollback
@@ -373,7 +374,7 @@ public class ScriptModuleLoader {
             JBossModuleClassLoader jBossModuleClassLoader = (JBossModuleClassLoader)moduleClassLoader;
             ScriptArchive scriptArchive = jBossModuleClassLoader.getScriptArchive();
             List<ScriptArchiveCompiler> candidateCompilers = findCompilers(scriptArchive);
-            if (candidateCompilers.size() == 0) {
+            if (candidateCompilers.isEmpty()) {
                 throw new ScriptCompilationException("Could not find a suitable compiler for this archive.");
             }
 
@@ -472,7 +473,7 @@ public class ScriptModuleLoader {
      * Select a set of compilers to compile this archive.
      */
     protected List<ScriptArchiveCompiler> findCompilers(ScriptArchive archive) {
-        List<ScriptArchiveCompiler> candidateCompilers = new ArrayList<ScriptArchiveCompiler>();
+        List<ScriptArchiveCompiler> candidateCompilers = new ArrayList<>();
         for (ScriptArchiveCompiler compiler : compilers) {
             if (compiler.shouldCompile(archive)) {
                 candidateCompilers.add(compiler);

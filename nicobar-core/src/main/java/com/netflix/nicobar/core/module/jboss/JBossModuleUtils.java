@@ -66,7 +66,7 @@ public class JBossModuleUtils {
     public static final DependencySpec JRE_DEPENDENCY_SPEC;
     static {
         // TODO: find a maintainable way to get these values and a better place to store these constants
-        Set<String> pathFilter = new HashSet<String>();
+        Set<String> pathFilter = new HashSet<>();
         pathFilter.add("com/netflix/nicobar/core");
         pathFilter.add("com/netflix/nicobar/core/archive");
         pathFilter.add("com/netflix/nicobar/core/compile");
@@ -121,7 +121,7 @@ public class JBossModuleUtils {
 
         // add string based properties from module spec metadata to the module spec being created
         Map<String, Object> archiveMetadata = scriptModuleSpec.getMetadata();
-        Map<String, String> stringMetadata = new HashMap<String, String>();
+        Map<String, String> stringMetadata = new HashMap<>();
         for (Entry<String, Object> entry: archiveMetadata.entrySet()) {
             if (entry.getValue() instanceof String) {
                 stringMetadata.put(entry.getKey(), (String)entry.getValue());
@@ -295,9 +295,9 @@ public class JBossModuleUtils {
      * @return a PathFilter.
      */
     private static PathFilter buildFilters(Set<String> filterPaths, boolean failedMatchValue) {
-        if (filterPaths == null)
+        if (filterPaths == null) {
             return PathFilters.acceptAll();
-        else if (filterPaths.isEmpty()) {
+        } else if (filterPaths.isEmpty()) {
             return PathFilters.rejectAll();
         } else {
             MultiplePathFilterBuilder builder = PathFilters.multiplePathFilterBuilder(failedMatchValue);

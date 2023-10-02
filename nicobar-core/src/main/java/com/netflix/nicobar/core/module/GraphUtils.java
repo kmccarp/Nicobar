@@ -127,7 +127,7 @@ public class GraphUtils {
      */
     public static <V> Set<V> getIncomingVertices(DirectedGraph<V, DefaultEdge> graph, V target) {
         Set<DefaultEdge> edges = graph.incomingEdgesOf(target);
-        Set<V> sources = new LinkedHashSet<V>();
+        Set<V> sources = new LinkedHashSet<>();
         for (DefaultEdge edge : edges) {
             sources.add(graph.getEdgeSource(edge));
         }
@@ -140,7 +140,7 @@ public class GraphUtils {
      */
     public static <V> Set<V> getOutgoingVertices(DirectedGraph<V, DefaultEdge> graph, V source) {
         Set<DefaultEdge> edges = graph.outgoingEdgesOf(source);
-        Set<V> targets = new LinkedHashSet<V>();
+        Set<V> targets = new LinkedHashSet<>();
         for (DefaultEdge edge : edges) {
             targets.add(graph.getEdgeTarget(edge));
         }
@@ -164,7 +164,7 @@ public class GraphUtils {
      */
     public static <V> Set<V> getLeafVertices(DirectedGraph<V, DefaultEdge> graph) {
         Set<V> vertexSet = graph.vertexSet();
-        Set<V> leaves = new HashSet<V>(vertexSet.size()*2);
+        Set<V> leaves = new HashSet<>(vertexSet.size()*2);
         for (V vertex : vertexSet) {
             if (graph.outgoingEdgesOf(vertex).isEmpty()) {
                 leaves.add(vertex);

@@ -162,7 +162,7 @@ public class JBossModuleUtilsTest {
     }
 
     private Set<String> getResourcePaths(ModuleClassLoader moduleClassLoader) {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         Iterator<Resource> resources = moduleClassLoader.iterateResources("", true);
         while (resources.hasNext()) {
             Resource resource = resources.next();

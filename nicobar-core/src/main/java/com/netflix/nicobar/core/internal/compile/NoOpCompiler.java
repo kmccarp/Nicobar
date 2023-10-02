@@ -37,6 +37,6 @@ public class NoOpCompiler implements ScriptArchiveCompiler {
 
     @Override
     public Set<Class<?>> compile(ScriptArchive archive, JBossModuleClassLoader moduleClassLoader, Path targetDir) {
-        return Collections.<Class<?>>emptySet();
+        return Collections.emptySet();
     }
 }
