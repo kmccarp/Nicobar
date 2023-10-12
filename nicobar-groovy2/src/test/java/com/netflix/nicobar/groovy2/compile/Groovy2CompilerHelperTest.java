@@ -168,7 +168,7 @@ public class Groovy2CompilerHelperTest {
      * Test compilation customizer
      */
     private static class TestCompilationCustomizer extends CompilationCustomizer {
-        private boolean executed = false;
+        private boolean executed;
 
         public TestCompilationCustomizer() {
             super(CompilePhase.SEMANTIC_ANALYSIS);

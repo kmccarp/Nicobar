@@ -51,7 +51,7 @@ public class ScriptManagerBootstrap extends ServerBootstrap {
 
                 bind(GuiceContainer.class).asEagerSingleton();
 
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
                 params.put(PackagesResourceConfig.PROPERTY_PACKAGES,
                     // pytheas resources
                     "com.netflix.explorers.resources;" +

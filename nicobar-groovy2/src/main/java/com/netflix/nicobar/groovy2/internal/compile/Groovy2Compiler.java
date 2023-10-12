@@ -41,10 +41,10 @@ import com.netflix.nicobar.core.module.jboss.JBossModuleClassLoader;
  */
 public class Groovy2Compiler implements ScriptArchiveCompiler {
 
-    public final static String GROOVY2_COMPILER_ID = "groovy2";
-    public final static String GROOVY2_COMPILER_PARAMS_CUSTOMIZERS = "customizerClassNames";
+    public static final String GROOVY2_COMPILER_ID = "groovy2";
+    public static final String GROOVY2_COMPILER_PARAMS_CUSTOMIZERS = "customizerClassNames";
 
-    private List<String> customizerClassNames = new LinkedList<String>();
+    private final List<String> customizerClassNames = new LinkedList<>();
 
     public Groovy2Compiler(Map<String, Object> compilerParams) {
         this.processCompilerParams(compilerParams);
@@ -93,7 +93,7 @@ public class Groovy2Compiler implements ScriptArchiveCompiler {
     public Set<Class<?>> compile(ScriptArchive archive, JBossModuleClassLoader moduleClassLoader, Path compilationRootDir)
         throws ScriptCompilationException, IOException {
         
-        List<CompilationCustomizer> customizers = new LinkedList<CompilationCustomizer>();
+        List<CompilationCustomizer> customizers = new LinkedList<>();
 
         for (String klassName: this.customizerClassNames) {
             CompilationCustomizer instance = this.getCustomizerInstanceFromString(klassName, moduleClassLoader);

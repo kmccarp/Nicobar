@@ -95,7 +95,7 @@ public class JarArchiveRepository implements ArchiveRepository {
     /**
      * Directory filter which finds readable jar files
      */
-    protected final static DirectoryStream.Filter<Path> JAR_FILE_FILTER = new DirectoryStream.Filter<Path>() {
+    protected static final DirectoryStream.Filter<Path> JAR_FILE_FILTER = new DirectoryStream.Filter<Path>() {
         public boolean accept(Path path) throws IOException {
             return (Files.isRegularFile(path) &&
                 Files.isReadable(path)) &&
@@ -196,7 +196,7 @@ public class JarArchiveRepository implements ArchiveRepository {
 
     @Override
     public Set<ScriptArchive> getScriptArchives(Set<ModuleId> moduleIds) throws IOException {
-        Set<ScriptArchive> scriptArchives = new LinkedHashSet<ScriptArchive>();
+        Set<ScriptArchive> scriptArchives = new LinkedHashSet<>();
         for (ModuleId moduleId : moduleIds) {
             Path moduleJar = getModuleJarPath(moduleId);
             if (Files.exists(moduleJar)) {
@@ -219,8 +219,7 @@ public class JarArchiveRepository implements ArchiveRepository {
      * Translated a module id to an absolute path of the module jar
      */
     protected Path getModuleJarPath(ModuleId moduleId) {
-        Path moduleJarPath = rootDir.resolve(moduleId + ".jar");
-        return moduleJarPath;
+        return rootDir.resolve(moduleId + ".jar");
     }
 
 
@@ -232,7 +231,7 @@ public class JarArchiveRepository implements ArchiveRepository {
 
         @Override
         public Map<ModuleId, Long> getArchiveUpdateTimes() throws IOException {
-            Map<ModuleId, Long> updateTimes = new LinkedHashMap<ModuleId, Long>();
+            Map<ModuleId, Long> updateTimes = new LinkedHashMap<>();
             try (DirectoryStream<Path> archiveJars = Files.newDirectoryStream(rootDir, JAR_FILE_FILTER)) {
                 for (Path archiveJar : archiveJars) {
                     Path absoluteArchiveFile = rootDir.resolve(archiveJar);
@@ -262,7 +261,7 @@ public class JarArchiveRepository implements ArchiveRepository {
 
         @Override
         public List<ArchiveSummary> getArchiveSummaries() throws IOException {
-            List<ArchiveSummary> summaries = new LinkedList<ArchiveSummary>();
+            List<ArchiveSummary> summaries = new LinkedList<>();
             Set<ModuleId> moduleIds = getArchiveUpdateTimes().keySet();
             Set<ScriptArchive> scriptArchives = getScriptArchives(moduleIds);
             for (ScriptArchive scriptArchive : scriptArchives) {

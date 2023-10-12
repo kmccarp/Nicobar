@@ -63,7 +63,6 @@ public class HystrixCassandraGetRowsByKeys<RowKeyType> extends AbstractCassandra
         if (columns != null) {
             rowQuery = rowQuery.withColumnSlice(columns);
         }
-        Rows<RowKeyType, String> result = rowQuery.execute().getResult();
-        return result;
+        return rowQuery.execute().getResult();
     }
 }

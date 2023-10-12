@@ -64,7 +64,6 @@ public class HystrixCassandraGetRowsByQuery<RowKeyType> extends AbstractCassandr
     protected Rows<RowKeyType, String> run() throws Exception {
         CqlResult<RowKeyType, String> cqlresult = keyspace.prepareQuery(columnFamily).withCql(cql).execute()
                 .getResult();
-        Rows<RowKeyType, String> result = cqlresult.getRows();
-        return result;
+        return cqlresult.getRows();
     }
 }

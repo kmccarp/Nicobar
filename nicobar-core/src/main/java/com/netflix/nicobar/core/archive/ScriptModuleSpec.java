@@ -42,12 +42,12 @@ public class ScriptModuleSpec {
      */
     public static class Builder {
         private final ModuleId moduleId;
-        private final Set<String> compilerPluginIds = new LinkedHashSet<String>();
-        private final Map<String, Object> archiveMetadata = new LinkedHashMap<String, Object>();
-        private final Set<ModuleId> moduleDependencies = new LinkedHashSet<ModuleId>();
-        private Set<String> appImportFilters = null;
-        private Set<String> moduleImportFilters = null;
-        private Set<String> moduleExportFilters = null;
+        private final Set<String> compilerPluginIds = new LinkedHashSet<>();
+        private final Map<String, Object> archiveMetadata = new LinkedHashMap<>();
+        private final Set<ModuleId> moduleDependencies = new LinkedHashSet<>();
+        private Set<String> appImportFilters;
+        private Set<String> moduleImportFilters;
+        private Set<String> moduleExportFilters;
 
         public Builder(String moduleId) {
             this.moduleId = ModuleId.fromString(moduleId);
@@ -120,7 +120,7 @@ public class ScriptModuleSpec {
         public Builder addAppImportFilter(String filterPath) {
             if (filterPath != null) {
                 if (appImportFilters == null) {
-                    appImportFilters = new LinkedHashSet<String>();
+                    appImportFilters = new LinkedHashSet<>();
                 }
                 appImportFilters.add(filterPath);
             }
@@ -139,7 +139,7 @@ public class ScriptModuleSpec {
         public Builder addModuleImportFilter(String filterPath) {
             if (filterPath != null) {
                 if (moduleImportFilters== null) {
-                    moduleImportFilters = new LinkedHashSet<String>();
+                    moduleImportFilters = new LinkedHashSet<>();
                 }
                 moduleImportFilters.add(filterPath);
             }
@@ -158,7 +158,7 @@ public class ScriptModuleSpec {
         public Builder addModuleExportFilter(String filterPath) {
             if (filterPath != null) {
                 if (moduleExportFilters== null) {
-                    moduleExportFilters = new LinkedHashSet<String>();
+                    moduleExportFilters = new LinkedHashSet<>();
                 }
                 moduleExportFilters.add(filterPath);
             }
