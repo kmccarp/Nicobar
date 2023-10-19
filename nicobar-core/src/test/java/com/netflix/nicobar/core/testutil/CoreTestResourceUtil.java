@@ -39,7 +39,7 @@ public class CoreTestResourceUtil {
     /**
      * Metadata for test resources found in test/resource
      */
-    public static enum TestResource {
+    public enum TestResource {
 
         TEST_TEXT_PATH("test-text", "paths/test-text", "sub1/sub1.txt", "sub2/sub2.txt", "root.txt", "META-INF/MANIFEST.MF"),
         TEST_TEXT_JAR("test-text", "jars/test-text.jar", "sub1/sub1.txt", "sub2/sub2.txt", "root.txt", "moduleSpec.json", "META-INF/MANIFEST.MF"),
@@ -61,7 +61,7 @@ public class CoreTestResourceUtil {
         private TestResource(String moduleId, String resourcePath, String... contentPaths) {
             this.moduleId = ModuleId.fromString(moduleId);
             this.resourcePath = resourcePath;
-            this.contentPaths = new LinkedHashSet<String>(Arrays.asList(contentPaths));
+            this.contentPaths = new LinkedHashSet<>(Arrays.asList(contentPaths));
         }
         /**
          * @return the expected moduleId after this is converted to a archive

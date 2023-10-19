@@ -40,11 +40,12 @@ public class GroovyTestResourceUtil {
 
     /** name of the root directory where the test modules are located */
     private static final String TEST_MODULES_BASE_DIR = "testmodules";
+
     /**
      * Metadata for test script found in test/resource.
      * Use in conjunction with {@link GroovyTestResourceUtil#findRootPathForScript(TestScript)}.
      */
-    public static enum TestScript {
+    public enum TestScript {
         HELLO_WORLD("helloworld", "HelloWorld.groovy", "HelloWorld"),
         HELLO_PACKAGE("hellopackage", "package1/HelloPackage.groovy", "package1.HelloPackage"),
         LIBRARY_A("libA", "LibraryA.groovy", "LibraryA"),
